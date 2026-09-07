@@ -1,0 +1,127 @@
+name: Build BAB
+
+on:
+  workflow_dispatch:
+  push:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Import BAB source tree from archive
+        if: ${{ hashFiles('build.gradle', 'build.gradle.kts') == '' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .ci-import
+          mkdir -p .ci-import/extracted
+
+          archive="$(find . -maxdepth 1 -type f \( -name '*complete-source*.zip' -o -name '*package*.zip' \) | sort | tail -n 1)"
+          if [[ -z "$archive" ]]; then
+            echo 'No BAB complete-source/package ZIP found in repository root.' >&2
+            exit 1
+          fi
+
+          echo "Import archive: $archive"
+          unzip -q "$archive" -d .ci-import/extracted
+
+          nested="$(find .ci-import/extracted -type f -name '*complete-source*.zip' | head -n 1 || true)"
+          if [[ -n "$nested" ]]; then
+            mkdir -p .ci-import/nested
+            echo "Nested complete-source: $nested"
+            unzip -q "$nested" -d .ci-import/nested
+            search_root='.ci-import/nested'
+          else
+            search_root='.ci-import/extracted'
+          fi
+
+          project_dir="$(find "$search_root" -type f \( -name 'build.gradle' -o -name 'build.gradle.kts' \) -printf '%h\n' | head -n 1)"
+          if [[ -z "$project_dir" ]]; then
+            echo 'Gradle project was not found after extraction.' >&2
+            exit 1
+          fi
+
+          echo "Importing project directory: $project_dir"
+          rsync -a \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='.gradle/' \
+            --exclude='build/' \
+            --exclude='out/' \
+            --exclude='run/' \
+            --exclude='libs/' \
+            --exclude='.gitignore' \
+            --exclude='README.md' \
+            "$project_dir"/ ./
+
+          rm -rf .ci-import
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo 'No source files needed importing.'
+          else
+            echo 'Files to import:'
+            git status --short
+            git commit -m 'Import BAB 0.1.9 source tree'
+            git push origin HEAD:main
+          fi
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle 8.8
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.8'
+
+      - name: Fetch TaCZ 1.1.8 hotfix dependency
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p libs
+          url='https://www.cursemaven.com/curse/maven/timeless-and-classics-zero-1028108/8141310/timeless-and-classics-zero-1028108-8141310.jar'
+          target='libs/tacz-1.20.1.jar'
+          echo 'Downloading TaCZ dependency from CurseMaven...'
+          curl --fail --location --retry 3 --retry-delay 2 "$url" -o "$target"
+          test -s "$target"
+          jar tf "$target" >/dev/null
+          sha256sum "$target"
+
+      - name: Build
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -f ./gradlew ]]; then
+            chmod +x ./gradlew
+            ./gradlew --no-daemon build
+          else
+            gradle --no-daemon build
+          fi
+
+      - name: Show JAR hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+          find build/libs -maxdepth 1 -type f -name '*.jar' -print -exec sha256sum {} \;
+
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: big-ammo-box-build
+          path: build/libs/*.jar
+          if-no-files-found: error
