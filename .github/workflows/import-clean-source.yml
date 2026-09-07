@@ -20,7 +20,7 @@ jobs:
       - name: Assemble clean source
         shell: bash
         env:
-          SOURCE_EXPORT_URL: 'https://sdmntprjapaneast.oaiusercontent.com/files/00000000-b598-8209-ad51-52fc70ac4f63/raw?se=2026-09-07T17%3A52%3A13Z&sp=r&sv=2026-02-06&sr=b&scid=771d4d9d-656e-56f4-9461-050dbe2a5fbf&skoid=03727f49-62d3-42ac-8350-1c0e6559d238&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-06T23%3A57%3A05Z&ske=2026-09-07T23%3A57%3A05Z&sks=b&skv=2026-02-06&sig=IBYrmW7Iifg5boqEugT/StsIkFU9KHioW1ppRLK97xY%3D'
+          SOURCE_EXPORT_URL: 'https://sdmntprjapaneast.oaiusercontent.com/files/00000000-5f10-8209-ab90-9685c9048dfc/raw?se=2026-09-07T18%3A00%3A19Z&sp=r&sv=2026-02-06&sr=b&scid=242c6180-e76f-5e66-8475-2f2342bb753f&skoid=03727f49-62d3-42ac-8350-1c0e6559d238&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-06T21%3A15%3A02Z&ske=2026-09-07T21%3A15%3A02Z&sks=b&skv=2026-02-06&sig=4qgWYupLP9oLWuPK1FxvA1M/G0/uWGQDRjsus87NTho%3D'
         run: |
           set -euo pipefail
           rm -rf /tmp/bab-artifact /tmp/bab-source /tmp/bab-clean /tmp/bab-buildtest
@@ -98,6 +98,7 @@ jobs:
           git fetch origin main
           git checkout main
           find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
+          rm -f /tmp/bab-clean/.github/workflows/build.yml
           cp -a /tmp/bab-clean/. .
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
