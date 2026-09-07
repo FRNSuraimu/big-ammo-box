@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CCC",
+    "CSC",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "big_ammo_box:compressed_ammo_box"
+    },
+    "S": {
+      "item": "big_ammo_box:compressed_nether_star"
+    }
+  },
+  "result": {
+    "item": "big_ammo_box:ammo_box_21b"
+  }
+}

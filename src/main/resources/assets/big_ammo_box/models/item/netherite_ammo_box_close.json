@@ -1,0 +1,9 @@
+{
+  "parent": "big_ammo_box:item/bab_ammo_box_plain_base_close",
+  "textures": {
+    "body": "minecraft:block/netherite_block",
+    "trim": "minecraft:block/polished_blackstone_bricks",
+    "accent": "minecraft:block/gray_concrete",
+    "particle": "minecraft:block/netherite_block"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PAP",
+    "ACA",
+    "PAP"
+  ],
+  "key": {
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "C": {
+      "item": "minecraft:chest"
+    },
+    "A": {
+      "type": "forge:nbt",
+      "count": 1,
+      "item": "tacz:ammo_box",
+      "nbt": "{Level:0}"
+    }
+  },
+  "result": {
+    "item": "big_ammo_box:iron_ammo_box_case"
+  }
+}

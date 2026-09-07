@@ -1,0 +1,8 @@
+{
+  "type": "big_ammo_box:case_upgrade",
+  "lower_case": "big_ammo_box:nether_star_ammo_box_case",
+  "material": {
+    "item": "big_ammo_box:compressed_nether_star"
+  },
+  "result": "big_ammo_box:compressed_ammo_box_case"
+}

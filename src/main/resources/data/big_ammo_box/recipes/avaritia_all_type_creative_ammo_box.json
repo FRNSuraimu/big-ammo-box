@@ -1,0 +1,203 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "avaritia"
+        }
+      ],
+      "recipe": {
+        "type": "avaritia:shaped_table",
+        "category": "misc",
+        "tier": 4,
+        "compatible": false,
+        "key": {
+          "S": {
+            "item": "big_ammo_box:compressed_nether_star"
+          },
+          "X": {
+            "item": "avaritia:infinity_catalyst"
+          },
+          "C": {
+            "item": "avaritia:crystal_matrix_ingot"
+          },
+          "N": {
+            "item": "avaritia:neutron_ingot"
+          },
+          "I": {
+            "item": "avaritia:infinity_ingot"
+          },
+          "Q": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo_box",
+            "nbt": "{Creative:1b}"
+          },
+          "a": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo",
+            "nbt": "{AmmoId:\"tacz:12g\"}"
+          },
+          "b": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo",
+            "nbt": "{AmmoId:\"tacz:22wmr\"}"
+          },
+          "c": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo",
+            "nbt": "{AmmoId:\"tacz:308\"}"
+          },
+          "d": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo",
+            "nbt": "{AmmoId:\"tacz:30_06\"}"
+          },
+          "e": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo",
+            "nbt": "{AmmoId:\"tacz:338\"}"
+          },
+          "f": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo",
+            "nbt": "{AmmoId:\"tacz:357mag\"}"
+          },
+          "g": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo",
+            "nbt": "{AmmoId:\"tacz:40mm\"}"
+          },
+          "h": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo",
+            "nbt": "{AmmoId:\"tacz:45acp\"}"
+          },
+          "i": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo",
+            "nbt": "{AmmoId:\"tacz:45_70\"}"
+          },
+          "j": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo",
+            "nbt": "{AmmoId:\"tacz:46x30\"}"
+          },
+          "k": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo",
+            "nbt": "{AmmoId:\"tacz:500mag\"}"
+          },
+          "l": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo",
+            "nbt": "{AmmoId:\"tacz:50ae\"}"
+          },
+          "m": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo",
+            "nbt": "{AmmoId:\"tacz:50bmg\"}"
+          },
+          "n": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo",
+            "nbt": "{AmmoId:\"tacz:545x39\"}"
+          },
+          "o": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo",
+            "nbt": "{AmmoId:\"tacz:556x45\"}"
+          },
+          "p": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo",
+            "nbt": "{AmmoId:\"tacz:57x28\"}"
+          },
+          "q": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo",
+            "nbt": "{AmmoId:\"tacz:58x42\"}"
+          },
+          "r": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo",
+            "nbt": "{AmmoId:\"tacz:68x51fury\"}"
+          },
+          "s": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo",
+            "nbt": "{AmmoId:\"tacz:762x25\"}"
+          },
+          "t": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo",
+            "nbt": "{AmmoId:\"tacz:762x39\"}"
+          },
+          "u": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo",
+            "nbt": "{AmmoId:\"tacz:762x54\"}"
+          },
+          "v": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo",
+            "nbt": "{AmmoId:\"tacz:792x57\"}"
+          },
+          "w": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo",
+            "nbt": "{AmmoId:\"tacz:9mm\"}"
+          },
+          "x": {
+            "type": "forge:nbt",
+            "count": 1,
+            "item": "tacz:ammo",
+            "nbt": "{AmmoId:\"tacz:rpg_rocket\"}"
+          }
+        },
+        "pattern": [
+          "SCNCNCNCS",
+          "CXIIIIIXN",
+          "NIabcdeIC",
+          "CIfghijIN",
+          "NIklQmnIC",
+          "CIopqrsIN",
+          "NItuvwxIC",
+          "CXIIIIIXN",
+          "SNCNCNCNS"
+        ],
+        "result": {
+          "item": "tacz:ammo_box",
+          "nbt": {
+            "AllTypeCreative": true
+          }
+        }
+      }
+    }
+  ]
+}

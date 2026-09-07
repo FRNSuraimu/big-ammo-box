@@ -1,0 +1,12 @@
+BIG AMMO BOX 1.0.0 依存関係
+
+必須:
+- Minecraft 1.20.1
+- Forge 47.x（開発・ビルド基準 47.4.20）
+- TaCZ（開発・ビルド基準 1.20.1-1.1.8-hotfix）
+
+任意:
+- Re:Avaritia 1.4.1系（Creative弾薬箱レシピ連携）
+
+第三者MOD本体は同梱しません。
+ローカルビルド時は libs/tacz-1.20.1.jar としてTaCZ JARを配置してください。

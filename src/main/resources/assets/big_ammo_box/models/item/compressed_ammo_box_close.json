@@ -1,0 +1,10 @@
+{
+  "parent": "big_ammo_box:item/bab_ammo_box_emblem_base_close",
+  "textures": {
+    "body": "minecraft:block/purple_concrete",
+    "trim": "minecraft:block/crying_obsidian",
+    "accent": "minecraft:block/magenta_concrete",
+    "badge": "big_ammo_box:item/ammo_box/badge_compressed_star",
+    "particle": "minecraft:block/purple_concrete"
+  }
+}

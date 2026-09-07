@@ -1,0 +1,11 @@
+{
+  "parent": "big_ammo_box:item/bab_ammo_box_base_close",
+  "textures": {
+    "body": "minecraft:block/green_concrete",
+    "trim": "minecraft:block/polished_blackstone_bricks",
+    "panel": "minecraft:block/black_concrete",
+    "accent": "minecraft:block/lime_concrete",
+    "badge": "big_ammo_box:item/ammo_box/badge_340_kan",
+    "particle": "minecraft:block/green_concrete"
+  }
+}

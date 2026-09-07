@@ -1,0 +1,70 @@
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '6.0.54'
+    id 'org.spongepowered.mixin' version '0.7.38'
+}
+
+group = mod_group_id
+version = mod_version
+base { archivesName = mod_id }
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+tasks.withType(JavaCompile).configureEach { options.release = 17; options.encoding = 'UTF-8' }
+
+minecraft {
+    mappings channel: mapping_channel, version: mapping_version
+    copyIdeResources = true
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+            property 'forge.logging.console.level', 'info'
+            mods { "${mod_id}" { source sourceSets.main } }
+        }
+        client {}
+        server { args '--nogui' }
+    }
+}
+
+repositories {
+    maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+    flatDir { dirs 'libs' }
+}
+
+def taczJar = file('libs/tacz-1.20.1.jar')
+if (!taczJar.exists()) {
+    throw new GradleException('Missing libs/tacz-1.20.1.jar. Copy a Minecraft 1.20.1 TaCZ jar there before building.')
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    compileOnly files(taczJar)
+}
+
+mixin {
+    add sourceSets.main, 'big_ammo_box.refmap.json'
+    config 'big_ammo_box.mixins.json'
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    def p = [minecraft_version:minecraft_version, forge_version:forge_version, mod_id:mod_id,
+             mod_name:mod_name, mod_license:mod_license, mod_version:mod_version,
+             mod_authors:mod_authors, mod_description:mod_description]
+    inputs.properties p
+    filesMatching('META-INF/mods.toml') { expand p }
+}
+
+tasks.named('jar', Jar).configure {
+    manifest {
+        attributes([
+            'MixinConfigs': 'big_ammo_box.mixins.json',
+            'Implementation-Version': project.jar.archiveVersion
+        ])
+    }
+    finalizedBy 'reobfJar'
+}

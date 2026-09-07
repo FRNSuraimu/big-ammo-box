@@ -1,0 +1,8 @@
+{
+  "type": "big_ammo_box:case_upgrade",
+  "lower_case": "big_ammo_box:iron_ammo_box_case",
+  "material": {
+    "item": "minecraft:gold_ingot"
+  },
+  "result": "big_ammo_box:gold_ammo_box_case"
+}

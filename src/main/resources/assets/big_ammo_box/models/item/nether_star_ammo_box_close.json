@@ -1,0 +1,10 @@
+{
+  "parent": "big_ammo_box:item/bab_ammo_box_emblem_base_close",
+  "textures": {
+    "body": "minecraft:block/quartz_block_side",
+    "trim": "minecraft:block/obsidian",
+    "accent": "minecraft:block/white_concrete",
+    "badge": "big_ammo_box:item/ammo_box/badge_nether_star",
+    "particle": "minecraft:block/quartz_block_side"
+  }
+}

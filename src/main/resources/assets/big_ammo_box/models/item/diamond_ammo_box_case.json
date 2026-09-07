@@ -1,0 +1,6 @@
+{
+  "parent": "big_ammo_box:item/ammo_box_case_base",
+  "textures": {
+    "emblem": "big_ammo_box:item/case/emblem_diamond"
+  }
+}

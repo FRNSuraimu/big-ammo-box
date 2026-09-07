@@ -1,0 +1,11 @@
+{
+  "parent": "big_ammo_box:item/bab_ammo_box_base_close",
+  "textures": {
+    "body": "minecraft:block/cyan_concrete",
+    "trim": "minecraft:block/deepslate_tiles",
+    "panel": "minecraft:block/black_concrete",
+    "accent": "minecraft:block/light_blue_concrete",
+    "badge": "big_ammo_box:item/ammo_box/badge_21b",
+    "particle": "minecraft:block/cyan_concrete"
+  }
+}

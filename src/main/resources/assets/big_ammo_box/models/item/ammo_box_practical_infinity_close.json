@@ -1,0 +1,11 @@
+{
+  "parent": "big_ammo_box:item/bab_ammo_box_base_close",
+  "textures": {
+    "body": "minecraft:block/black_concrete",
+    "trim": "minecraft:block/obsidian",
+    "panel": "minecraft:block/black_concrete",
+    "accent": "minecraft:block/blue_ice",
+    "badge": "big_ammo_box:item/ammo_box/badge_practical_infinity",
+    "particle": "minecraft:block/black_concrete"
+  }
+}

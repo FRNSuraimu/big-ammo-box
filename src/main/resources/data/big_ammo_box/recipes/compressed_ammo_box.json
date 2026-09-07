@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PMP",
+    "P P",
+    "PPP"
+  ],
+  "key": {
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "M": {
+      "item": "big_ammo_box:compressed_nether_star"
+    }
+  },
+  "result": {
+    "item": "big_ammo_box:compressed_ammo_box"
+  }
+}

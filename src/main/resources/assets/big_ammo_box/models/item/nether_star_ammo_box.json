@@ -1,0 +1,11 @@
+{
+  "parent": "big_ammo_box:item/nether_star_ammo_box_open",
+  "overrides": [
+    {
+      "predicate": {
+        "big_ammo_box:loaded": 1.0
+      },
+      "model": "big_ammo_box:item/nether_star_ammo_box_close"
+    }
+  ]
+}

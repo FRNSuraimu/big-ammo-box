@@ -1,0 +1,9 @@
+{
+  "parent": "big_ammo_box:item/ammo_box_340_kan_open",
+  "overrides": [
+    {
+      "predicate": {"big_ammo_box:loaded": 1.0},
+      "model": "big_ammo_box:item/ammo_box_340_kan_close"
+    }
+  ]
+}
