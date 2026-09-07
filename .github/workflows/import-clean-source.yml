@@ -17,30 +17,21 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Assemble clean source
+      - name: Download and validate clean source
         shell: bash
         env:
-          SOURCE_EXPORT_URL: 'https://sdmntprjapaneast.oaiusercontent.com/files/00000000-5f10-8209-ab90-9685c9048dfc/raw?se=2026-09-07T18%3A00%3A19Z&sp=r&sv=2026-02-06&sr=b&scid=242c6180-e76f-5e66-8475-2f2342bb753f&skoid=03727f49-62d3-42ac-8350-1c0e6559d238&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-06T21%3A15%3A02Z&ske=2026-09-07T21%3A15%3A02Z&sks=b&skv=2026-02-06&sig=4qgWYupLP9oLWuPK1FxvA1M/G0/uWGQDRjsus87NTho%3D'
+          CLEAN_SOURCE_ARTIFACT_URL: 'https://sdmntprkoreacentral.oaiusercontent.com/files/00000000-1b48-8206-9570-6362d9c248e9/raw?se=2026-09-07T18%3A02%3A16Z&sp=r&sv=2026-02-06&sr=b&scid=8bf5d405-9b64-5d46-bb15-2aab88c06467&skoid=03727f49-62d3-42ac-8350-1c0e6559d238&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-07T01%3A06%3A30Z&ske=2026-09-08T01%3A06%3A30Z&sks=b&skv=2026-02-06&sig=8ae0129E1D543Zyg4uWtOzTHLgst7lcmUeH/Um%2BlwOQ%3D'
         run: |
           set -euo pipefail
-          rm -rf /tmp/bab-artifact /tmp/bab-source /tmp/bab-clean /tmp/bab-buildtest
-          mkdir -p /tmp/bab-artifact /tmp/bab-source /tmp/bab-clean
+          rm -rf /tmp/bab-artifact /tmp/bab-clean /tmp/bab-buildtest
+          mkdir -p /tmp/bab-artifact /tmp/bab-clean
 
-          curl --fail --location --retry 3 --retry-delay 1 "$SOURCE_EXPORT_URL" -o /tmp/bab-source-artifact.zip
-          unzip -q /tmp/bab-source-artifact.zip -d /tmp/bab-artifact
-          nested="$(find /tmp/bab-artifact -type f -name '*complete-source*.zip' | head -n 1)"
-          test -n "$nested"
-          unzip -q "$nested" -d /tmp/bab-source
-          project_dir="$(find /tmp/bab-source -type f -name 'build.gradle' -printf '%h\n' | head -n 1)"
-          test -n "$project_dir"
-
-          cp "$project_dir/build.gradle" /tmp/bab-clean/
-          cp "$project_dir/settings.gradle" /tmp/bab-clean/
-          cp -a "$project_dir/src" /tmp/bab-clean/
-
-          cat .import/overlay-00 .import/overlay-01 .import/overlay-02a .import/overlay-02b .import/overlay-03 .import/overlay-04 | tr -d '\r\n' | base64 --decode > /tmp/bab-overlay.zip
-          echo '08b40772a24ad44a8feb600ab1d24b47abef1e5c0cad7cb056f8bafa5234cdab  /tmp/bab-overlay.zip' | sha256sum -c -
-          unzip -q -o /tmp/bab-overlay.zip -d /tmp/bab-clean
+          curl --fail --location --retry 3 --retry-delay 2 "$CLEAN_SOURCE_ARTIFACT_URL" -o /tmp/bab-artifact.zip
+          unzip -q /tmp/bab-artifact.zip -d /tmp/bab-artifact
+          source_zip="$(find /tmp/bab-artifact -maxdepth 2 -type f -name 'big-ammo-box-1.0.0-clean-source.zip' | head -n 1)"
+          test -n "$source_zip"
+          echo "c9bfa6aa10183a9de8045c06bcd47fb485bc6a1f7b47ac6dec66f81eb6ccbd10  $source_zip" | sha256sum -c -
+          unzip -q "$source_zip" -d /tmp/bab-clean
 
           test -f /tmp/bab-clean/src/main/java/com/bigammobox/BigAmmoBoxMod.java
           test -f /tmp/bab-clean/src/main/resources/META-INF/mods.toml
@@ -52,17 +43,18 @@ jobs:
           grep -Fq 'mod_authors=FRNSuraimu | \u958b\u767a\u652f\u63f4: OpenAI (Development Assistance: OpenAI)' /tmp/bab-clean/gradle.properties
 
           if find /tmp/bab-clean -type f -name '*.zip' | grep -q .; then
-            echo 'Unexpected ZIP found in public clean source.' >&2
+            echo 'Unexpected ZIP found inside clean source.' >&2
             exit 1
           fi
           if find /tmp/bab-clean -type f | grep -E 'source-export|0\.1\.[0-9].*complete-source|RUNTIME_CHECK|STATIC_VALIDATION|VALIDATION_|IMPLEMENTATION_|BUILD_STATUS_' ; then
-            echo 'Unexpected internal/development artifact found in public clean source.' >&2
+            echo 'Unexpected internal/development artifact found in clean source.' >&2
             exit 1
           fi
           if grep -R -E 'ring_21b|ring_compressed|ring_netherite|ring_nether_star' /tmp/bab-clean/src; then
-            echo 'Removed TaCZ-derived ring asset reference reappeared.' >&2
+            echo 'Removed TaCZ-derived ring asset/reference reappeared.' >&2
             exit 1
           fi
+
           cp -a /tmp/bab-clean /tmp/bab-buildtest
 
       - name: Set up Java 17
@@ -75,21 +67,20 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.8'
+          build-root-directory: /tmp/bab-buildtest
 
       - name: Build clean source before promotion
         shell: bash
+        working-directory: /tmp/bab-buildtest
         run: |
           set -euo pipefail
-          cd /tmp/bab-buildtest
           mkdir -p libs
-          curl --fail --location --retry 3 --retry-delay 2 'https://www.cursemaven.com/curse/maven/timeless-and-classics-zero-1028108/8141310/timeless-and-classics-zero-1028108-8141310.jar' -o libs/tacz-1.20.1.jar
+          url='https://www.cursemaven.com/curse/maven/timeless-and-classics-zero-1028108/8141310/timeless-and-classics-zero-1028108-8141310.jar'
+          curl --fail --location --retry 3 --retry-delay 2 "$url" -o libs/tacz-1.20.1.jar
           test -s libs/tacz-1.20.1.jar
           jar tf libs/tacz-1.20.1.jar >/dev/null
           gradle --no-daemon build
-          test -f build/libs/big_ammo_box-1.0.0.jar
-          unzip -p build/libs/big_ammo_box-1.0.0.jar META-INF/mods.toml > /tmp/bab-built-mods.toml
-          grep -Fq 'FRNSuraimu | 開発支援: OpenAI (Development Assistance: OpenAI)' /tmp/bab-built-mods.toml
-          sha256sum build/libs/big_ammo_box-1.0.0.jar
+          find build/libs -maxdepth 1 -type f -name '*.jar' -print -exec sha256sum {} \;
 
       - name: Promote clean source to main
         shell: bash
@@ -98,11 +89,12 @@ jobs:
           git fetch origin main
           git checkout main
           find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
-          rm -f /tmp/bab-clean/.github/workflows/build.yml
           cp -a /tmp/bab-clean/. .
+
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
           git diff --cached --check
+          git status --short
           git commit -m 'Import BIG AMMO BOX 1.0.0 clean source'
           git push origin HEAD:main
